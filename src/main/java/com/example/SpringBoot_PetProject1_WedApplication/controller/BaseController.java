@@ -1,8 +1,10 @@
 package com.example.SpringBoot_PetProject1_WedApplication.controller;
 
 import com.example.SpringBoot_PetProject1_WedApplication.domain.Message;
+import com.example.SpringBoot_PetProject1_WedApplication.domain.User;
 import com.example.SpringBoot_PetProject1_WedApplication.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,10 +35,11 @@ public class BaseController {
 
 /* Обрабатываем отправку формы в db :*/
     @PostMapping("/base")
-    public String addMessage(@RequestParam String text,
+    public String addMessage(@AuthenticationPrincipal User author,
+                             @RequestParam String text,
                              @RequestParam String tag,
                              Map<String, Object> model) {
-        Message message = new Message(text, tag);
+        Message message = new Message(text, tag, author);
         messageRepository.save(message);
 
         Iterable<Message> messages = messageRepository.findAll();

@@ -1,5 +1,12 @@
 package com.example.SpringBoot_PetProject1_WedApplication.domain;
 
-public enum Role {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum Role implements GrantedAuthority {
     USER;
+
+    @Override
+    public String getAuthority() {
+        return name(); // name() - строковое представления значения "USER"
+    }
 }

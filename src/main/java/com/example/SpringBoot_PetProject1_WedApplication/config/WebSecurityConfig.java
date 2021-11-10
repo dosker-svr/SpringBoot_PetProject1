@@ -1,5 +1,6 @@
 package com.example.SpringBoot_PetProject1_WedApplication.config;
 
+import com.example.SpringBoot_PetProject1_WedApplication.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,9 +20,10 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
+    /*@Autowired
+    private DataSource dataSource; // dataSource нужен чтобы менеджер мог входит в базу данных и искать User +Role */
     @Autowired
-    private DataSource dataSource;
+    private UserService userService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -55,6 +57,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService)
+                /* используем вместо dataSource, чтобы входить в DB и искать User +Role, и получать эту инфу в контроллере*/
+                .passwordEncoder(NoOpPasswordEncoder.getInstance());
+    }
+
+/*
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(dataSource) // dataSource нужен чтобы менеджер мог входит в базу данных и искать User +Role
                 .passwordEncoder(NoOpPasswordEncoder.getInstance()) // шифрование паролей
@@ -65,6 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "select u.username, ur.roles from usr u inner join user_role ur on u.id = ur.user_id where u.username=?"
                 ); /* помогает Spring получить список User's с их Role's
                  "выбрать 'username+roles'
-                         из таблицы 'usr' и присоеденной к ней таблице 'user_role' черех поля 'id' и 'user_id'" */
+                         из таблицы 'usr' и присоеденной к ней таблице 'user_role' через поля 'id' и 'user_id'"
     }
+*/
 }

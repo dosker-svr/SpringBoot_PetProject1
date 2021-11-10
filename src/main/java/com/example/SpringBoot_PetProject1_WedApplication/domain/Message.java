@@ -1,9 +1,6 @@
 package com.example.SpringBoot_PetProject1_WedApplication.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity //аннотация говорит о том, что это 'сущность', которую необходимо сохранять в БД ???
 public class Message {
@@ -14,13 +11,27 @@ public class Message {
     private String text;
     private String tag;
 
+// указываем как пользователь должен сохраняться в DB
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User author;
+    /* указываем что, одному пользователю соответсвует множество 'Message's'
+    fetch - указываем что при получении сообщения, хотим получать инфу об авторе*/
+    /* @JoinColumn - тут указываем название колонки, как она должна быть записана в db
+    чтобы в db это поле значилось как user_id, а не как author_id (по-умолчанию) */
+
 // обязательно нужно делать пустой конструктор ???
     public Message() {
     }
 
-    public Message(String text, String tag) {
+    public Message(String text, String tag, User user) {
+        this.author = user;
         this.text = text;
         this.tag = tag;
+    }
+
+    public String getAuthorName() {
+        return author != null ? author.getUsername() : "<lol:none>";
     }
 
     public Integer getId() {
@@ -45,5 +56,13 @@ public class Message {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 }
