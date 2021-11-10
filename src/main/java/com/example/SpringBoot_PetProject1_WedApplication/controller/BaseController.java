@@ -1,4 +1,4 @@
-package com.example.SpringBoot_PetProject1_WedApplication;
+package com.example.SpringBoot_PetProject1_WedApplication.controller;
 
 import com.example.SpringBoot_PetProject1_WedApplication.domain.Message;
 import com.example.SpringBoot_PetProject1_WedApplication.repository.MessageRepository;
@@ -13,26 +13,26 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class GreetingController {
+public class BaseController {
     @Autowired
     private MessageRepository messageRepository;
 
-    @GetMapping("/greeting")
-    public String getGreeting(@RequestParam(required=false, defaultValue="WRLD") String name,
-                              Map<String, Object> model) { //model - это то, куда складываем данные, возвращаемые пользователю
-        model.put("name", name);
+    @GetMapping("/")
+    public String getGreeting(Map<String, Object> model) {
+        //model - это то, куда складываем данные, возвращаемые пользователю
         return "greeting";
     }
 
-    @GetMapping
+    @GetMapping("/base")
     public String baseBase(Map<String, Object> model) {
-        // разобраться в этом мапинге:
+        // разобраться в MessageRepository
         Iterable<Message> messages = messageRepository.findAll();
         model.put("messages", messages);
         return "base";
     }
 
-    @PostMapping
+/* Обрабатываем отправку формы в db :*/
+    @PostMapping("/base")
     public String addMessage(@RequestParam String text,
                              @RequestParam String tag,
                              Map<String, Object> model) {
@@ -45,6 +45,7 @@ public class GreetingController {
         return "base";
     }
 
+/* Обрабатываем фильтрацию данных в db : */
     @PostMapping("filter")
     public String filter(@RequestParam String filter, Map<String, Object> model) {
         Iterable<Message> messages;

@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity //аннотация говорит о том, что это 'сущность', которую необходимо сохранять в БД
+@Entity //аннотация говорит о том, что это 'сущность', которую необходимо сохранять в БД ???
 public class Message {
     @Id //id в таблице postgre
     @GeneratedValue(strategy= GenerationType.AUTO) //как будут генерироваться идентификаторы
@@ -14,6 +14,7 @@ public class Message {
     private String text;
     private String tag;
 
+// обязательно нужно делать пустой конструктор ???
     public Message() {
     }
 
