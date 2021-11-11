@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -26,10 +25,17 @@ public class BaseController {
     }
 
     @GetMapping("/base")
-    public String baseBase(Map<String, Object> model) {
+    public String baseBase(@RequestParam(required=false, defaultValue="") String filter,
+                           Model model) { // узнать что такое 'model' ???
         // разобраться в MessageRepository
         Iterable<Message> messages = messageRepository.findAll();
-        model.put("messages", messages);
+        if (filter != null && !filter.isEmpty()) {
+            messages = messageRepository.findByTag(filter);
+        } else {
+            messages = messageRepository.findAll();
+        }
+        model.addAttribute("messages", messages);
+        model.addAttribute("filter", filter);
         return "base";
     }
 
