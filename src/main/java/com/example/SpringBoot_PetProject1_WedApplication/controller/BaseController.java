@@ -29,17 +29,20 @@ public class BaseController {
                            Model model) { // узнать что такое 'model' ???
         // разобраться в MessageRepository
         Iterable<Message> messages = messageRepository.findAll();
+
+/* Обрабатываем фильтрацию данных в db : */
         if (filter != null && !filter.isEmpty()) {
             messages = messageRepository.findByTag(filter);
         } else {
             messages = messageRepository.findAll();
         }
+
         model.addAttribute("messages", messages);
         model.addAttribute("filter", filter);
         return "base";
     }
 
-/* Обрабатываем отправку формы в db :*/
+/* Обрабатываем отправку формы Добавления сообщения в db :*/
     @PostMapping("/base")
     public String addMessage(@AuthenticationPrincipal User author,
                              @RequestParam String text,
@@ -54,16 +57,4 @@ public class BaseController {
         return "base";
     }
 
-/* Обрабатываем фильтрацию данных в db : */
-    @PostMapping("filter")
-    public String filter(@RequestParam String filter, Map<String, Object> model) {
-        Iterable<Message> messages;
-        if (filter != null && !filter.isEmpty()) {
-            messages = messageRepository.findByTag(filter);
-        } else {
-            messages = messageRepository.findAll();
-        }
-        model.put("messages", messages);
-        return "base";
-    }
 }

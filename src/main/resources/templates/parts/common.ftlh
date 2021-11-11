@@ -1,3 +1,4 @@
+<#-- сами макросы - #, а вызов их - @ -->
 <#macro page>
 <!DOCTYPE html>
 <html lang="en">
@@ -6,7 +7,7 @@
     <title>Title</title>
 </head>
 <body>
-<#nested>
+<#nested> <#-- секция в которой содержится вложенный код -->
 </body>
 </html>
 </#macro>

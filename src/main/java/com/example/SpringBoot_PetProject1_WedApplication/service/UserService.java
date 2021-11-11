@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+// узнать как работает и для чего нужен ???
 @Service
 public class UserService implements UserDetailsService {
     @Autowired

@@ -1,5 +1,7 @@
-<#macro login path>
-    <form action="${path}" method="post">
+<#macro login path> <#-- макрос под названием 'login' с аргументом 'path'-->
+    <form action="${path}" method="post"> <#-- как раз тут используем этот аргумент, который потом укажем тут:
+                                             <#import "parts/login.ftlh" as l>
+                                             <@l.login "/login" />                  -->
         <div><label> User Name : <input type="text" name="username"/> </label></div>
         <div><label> Password: <input type="password" name="password"/> </label></div>
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
