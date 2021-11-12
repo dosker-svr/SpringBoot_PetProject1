@@ -19,7 +19,7 @@
     </div>
     <div>Список сообщений</div>
     <form method="get" action="/base">           <#-- форма фильтрации данных в db-->
-        <input type="text" name="filter" value="${filter}" /> <#--value="${filter}" -->
+        <input type="text" name="filter" value="${filter?ifExists}" />
         <button type="submit">Найти</button>
     </form>
     <#list messages as message>                 <#--цикл обхода списков во freemarker -->
