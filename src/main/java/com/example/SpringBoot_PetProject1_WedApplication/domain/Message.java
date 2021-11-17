@@ -1,5 +1,7 @@
 package com.example.SpringBoot_PetProject1_WedApplication.domain;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.*;
 
 @Entity //аннотация говорит о том, что это 'сущность', которую необходимо сохранять в БД ???
@@ -10,6 +12,7 @@ public class Message {
 
     private String text;
     private String tag;
+    private String filename;
 
 // указываем как пользователь должен сохраняться в DB
     @ManyToOne(fetch = FetchType.EAGER)
@@ -64,5 +67,13 @@ public class Message {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }

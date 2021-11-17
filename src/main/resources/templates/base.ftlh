@@ -8,10 +8,11 @@
         <span><a href="/user">Users List</a></span>
     </div>
     <div>
-        <form method="post">                       <#-- форма ввода данных в db-->
-            <input type="text" name="text" placeholder="Введите сообщение"/>
-            <input type="text" name="tag" placeholder="Тэг"/>
-            <input type="hidden" name="_csrf" value="${_csrf.token}"/> <#-- любой запрос на сервер не сопровождающийся
+        <form method="post" enctype="multipart/form-data">                       <#-- форма ввода данных в db-->
+            <input type="text" name="text" placeholder="Введите сообщение" />
+            <input type="text" name="tag" placeholder="Тэг">
+            <input type="file" name="file">
+            <input type="hidden" name="_csrf" value="${_csrf.token}" /> <#-- любой запрос на сервер не сопровождающийся
                                                                          этим токеном будет игнорироваться сервером.
                                                                          токен нужен только для post запросов-->
             <button type="submit">Добавить</button>
@@ -28,6 +29,11 @@
             <span>${message.text}</span>
             <i>${message.tag}</i>
             <strong>${message.authorName}</strong>
+            <div>
+                <#if message.filename??>
+                    <img src="/img/${message.filename}" />
+                </#if>
+            </div>
         </div>
     <#else>
         No messages
