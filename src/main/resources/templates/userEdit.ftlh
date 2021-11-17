@@ -5,6 +5,7 @@ User editor
 <#-- сначала необходимо отобразить данные, который хотим отредактировать, а потом отредактированные передать в db -->
 <form action="/user" method="post">
     <input type="text" name="username" value="${user.username}"/>
+    <input type="text" name="password" value="${user.password}"/>
     <#list roles as role>
         <div>
             <label>

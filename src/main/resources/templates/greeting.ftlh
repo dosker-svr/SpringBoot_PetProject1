@@ -1,6 +1,6 @@
 <#import "parts/common.ftlh" as c>
 
 <@c.page>
-<div>Hello, user</div>
-<a href="/base">Base page</a>
+<h5>Hello, user</h5>
+<div>I'm created a clone as 4chan</div>
 </@c.page>
