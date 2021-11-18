@@ -17,6 +17,10 @@ public class User implements UserDetails { //
     private String username;
     private String password;
     private boolean active;
+/* поле для оповещения пользователя*/
+    private String email;
+/* поля для подтверждения что пользователь владеет email*/
+    private String activationCode;
 
 /* @ElementCollection - Позволяет не хранить доп.таблицу для хранения enum
    fetch - параметр определяет, как значения enum будут подгружаться относительно остновной сущности (User)
@@ -95,5 +99,21 @@ public class User implements UserDetails { //
 
     public boolean isAdmin() {
         return roles.contains(Role.ADMIN);
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
     }
 }
