@@ -8,7 +8,7 @@
     known = Session.SPRING_SECURITY_CONTEXT??
 >
 
-<#if known> <#-- если сессия существ., то : -->
+<#if known> <#-- если сессия существ.(user авторизован), то : -->
     <#-- сначала определяем набор необходимых данных -->
     <#-- 'Session.SPRING_SECURITY_CONTEXT.authentication.principal' - будет содержать user из db (User.java) -->
     <#assign

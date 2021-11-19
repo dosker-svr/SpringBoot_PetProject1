@@ -24,6 +24,11 @@
                     <a class="nav-link" href="/user">List Users</a>
                 </li>
                 </#if>
+                <#if user??> <#-- user?? - в 'security.ftlh' если user авторизован -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/profile">Profile</a>
+                    </li>
+                </#if>
             </ul>
             <div class="navbar-text me-3" >${name}</div> <#--  -->
             <@l.logout />

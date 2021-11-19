@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 // узнать как работает и для чего нужен ???
 @Service
@@ -39,16 +39,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
 
 /* если у user есть почта, отправляем ему оповещение для подтверждения почты:*/
-        if (!StringUtils.isEmpty(user.getEmail())) {
-            String message = String.format("Hi, %s! \n" +
-                    "Welcome to WebApp, Please, visit next link: http://localhost:8080/activate/%s",
-/* при реальной разработке линк выносим в .properties*/
-                    user.getUsername(),
-                    user.getActivationCode()
-            );
-
-            mailSenderService.send(user.getEmail(), "Activation code", message);
-        }
+        sendActivationCode(user);
         return true;
     }
 
@@ -61,5 +52,64 @@ public class UserService implements UserDetailsService {
         user.setActivationCode(null);
         userRepository.save(user);
         return true;
+    }
+
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public void saveUser(User user, String username, Map<String, String> form) {
+        user.setUsername(username);
+/* Перед тем как обновлять роли, нам нужно получить список Role'й, чтобы проверить, что они установлены данному пользователю:*/
+        Set<String> roles = Arrays.stream(Role.values())
+                .map(Role::name)
+                .collect(Collectors.toSet());
+/* Очищаем у пользователя Set с Roles, чтобы положить туда добавленные вновь*/
+        user.getRoles().clear();
+/* Теперь првоеряем, какие у 'Map form' содержатся Role пользователя в #list roles */
+        for (String key: form.keySet()) {
+            if (roles.contains(key)) {
+                user.getRoles().add(Role.valueOf(key));
+            }
+        }
+        userRepository.save(user);
+    }
+
+    public void updateProfile(User user, String password, String email) {
+        String userEmail = user.getEmail();
+
+        boolean isEmailChanged = (email != null && !email.equals(userEmail)) ||
+                                 (userEmail != null && !userEmail.equals(email));
+
+        if (isEmailChanged) {
+            user.setEmail(email);
+            if (!StringUtils.isEmpty(email)) {
+                user.setActivationCode(UUID.randomUUID().toString());
+            }
+        }
+
+        if (!StringUtils.isEmpty(password)) {
+            user.setPassword(password);
+        }
+
+        userRepository.save(user);
+
+        if (isEmailChanged) {
+            sendActivationCode(user);
+        }
+
+    }
+
+    private void sendActivationCode(User user) {
+        if (!StringUtils.isEmpty(user.getEmail())) {
+            String message = String.format("Hi, %s! \n" +
+                            "Welcome to WebApp, Please, visit next link: http://localhost:8080/activate/%s",
+                    /* при реальной разработке линк выносим в .properties*/
+                    user.getUsername(),
+                    user.getActivationCode()
+            );
+
+            mailSenderService.send(user.getEmail(), "Activation code", message);
+        }
     }
 }

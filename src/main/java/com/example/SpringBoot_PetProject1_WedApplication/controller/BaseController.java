@@ -52,7 +52,8 @@ public class BaseController {
 
 /* Обрабатываем отправку формы Добавления сообщения в db :*/
     @PostMapping("/base")
-    public String addMessage(@AuthenticationPrincipal User author,
+    public String addMessage(@AuthenticationPrincipal User author, /* получение user из контекста (чтобы не получать его из db)
+                                                                      WebSecurityConfig */
                              @RequestParam String text,
                              @RequestParam String tag,
                              Map<String, Object> model,

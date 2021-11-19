@@ -11,14 +11,14 @@
         <div class="form-group row">
             <label class="col-sm-1 col-form-label  mb-1">Password:</label>
             <div class="col-sm-4">
-                <input type="password" name="password" class="form-control" placeholder="Password"/> <#-- type="text" - возможно "password"-->
+                <input type="password" name="password" class="form-control" placeholder="Password"/> <#-- type="password" - возможно "text"-->
             </div>
         </div>
         <#if isRegisterForm>
         <div class="form-group row">
             <label class="col-sm-1 col-form-label  mb-1">Email:</label>
             <div class="col-sm-4">
-                <input type="email" name="email" class="form-control" placeholder="some@some.com"/> <#-- type="text" - возможно "email"-->
+                <input type="email" name="email" class="form-control" placeholder="some@some.com"/> <#-- type="email" - возможно "text"-->
             </div>
         </div>
         </#if>

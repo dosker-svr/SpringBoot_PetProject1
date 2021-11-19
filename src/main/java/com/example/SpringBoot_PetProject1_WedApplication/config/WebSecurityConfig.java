@@ -60,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService)
-                /* используем вместо dataSource, чтобы входить в DB и искать User +Role, и получать эту инфу в контроллере*/
+                /* используем вместо dataSource, чтобы входить в DB и искать User +Role, и получать эту инфу в контроллере ("/base" @AuthenticationPrincipal)*/
                 .passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
 
