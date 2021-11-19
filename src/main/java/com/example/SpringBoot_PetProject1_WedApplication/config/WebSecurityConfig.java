@@ -12,7 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import javax.sql.DataSource;
@@ -26,6 +28,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private DataSource dataSource; // dataSource нужен чтобы менеджер мог входит в базу данных и искать User +Role */
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+/* создаем Бин т.к. Енкодер понадобится не только при процессе логина польз. */
+    @Bean
+    public PasswordEncoder getPasswordEncoder() {
+        return new BCryptPasswordEncoder(8);
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -43,26 +54,35 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll();
     }
 
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService)
+                /* используем вместо dataSource, чтобы входить в DB и искать User +Role, и получать эту инфу в контроллере ("/base" @AuthenticationPrincipal)*/
+                .passwordEncoder(passwordEncoder); /* тут используется при проверки пароля пользователя при логине*/
+    }
+
+
+
+
+
+
+
+
+
+    /*
     // этот метод приложение берёт по требованию
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
         UserDetails user = User.withDefaultPasswordEncoder() // помечен как 'deprecated', т.к. нужен только для отладки
-                                .username("u")
-                                .password("1")
-                                .roles("USER")
-                                .build();
+                .username("u")
+                .password("1")
+                .roles("USER")
+                .build();
         // ничего ни шифрует, ничего не хранит, при каждом перезапуске приложения, он создаёт пользователя
 
         return new InMemoryUserDetailsManager(user); /* этот метод создаёт менеджер, который обслуживает учётные записи */
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService)
-                /* используем вместо dataSource, чтобы входить в DB и искать User +Role, и получать эту инфу в контроллере ("/base" @AuthenticationPrincipal)*/
-                .passwordEncoder(NoOpPasswordEncoder.getInstance());
-    }
+    /*}*/
 
 /*
     @Override

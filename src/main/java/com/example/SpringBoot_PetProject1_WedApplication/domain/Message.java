@@ -1,8 +1,10 @@
 package com.example.SpringBoot_PetProject1_WedApplication.domain;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity //аннотация говорит о том, что это 'сущность', которую необходимо сохранять в БД ???
 public class Message {
@@ -10,7 +12,10 @@ public class Message {
     @GeneratedValue(strategy= GenerationType.AUTO) //как будут генерироваться идентификаторы
     private Long id;
 
+    @NotBlank(message = "Please fill the message")
+    @Length(max = 2048, message = "Message too long (more than 2kB)")
     private String text;
+    @Length(max = 255, message = "Tag too long (more than 255)")
     private String tag;
     private String filename;
 
