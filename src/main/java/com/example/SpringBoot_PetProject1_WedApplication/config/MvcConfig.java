@@ -1,7 +1,9 @@
 package com.example.SpringBoot_PetProject1_WedApplication.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -12,6 +14,11 @@ public class MvcConfig implements WebMvcConfigurer {
 /* раздавать/отображать загруженные файлы (MultipartFile file): */
     @Value("${upload.path}")
     private String uploadPath;
+
+    @Bean /* для валидации каптчи*/
+    public RestTemplate getRestTemplate() {
+        return new RestTemplate();
+    }
 
     public void addViewControllers(ViewControllerRegistry registry) {
 /*Нам не нужно создавать свой контроллер, т.к. раздаются страницы, у которых шаблоны описаны и нет логики.
