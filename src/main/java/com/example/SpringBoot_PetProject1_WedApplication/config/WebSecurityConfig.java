@@ -50,6 +50,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/login")  // указываем где находится 'loginPage'
                     .permitAll()
                 .and()
+                    .rememberMe() /* авто-авторизация - Spring будет искать где-то(полученным от пользоват. идентификатрам,куках),
+                     настройки польз. и попытает его авторизовать,
+                     НО если выполняется перезапуск нашего App или запущено несколько серверов с нашим App,
+                     то информац. о сессии будет потеряна.
+                     значит её нужо где-то хранить (в нашем случае будем хранить в db - SpringSession)*/
+                .and()
                     .logout()
                     .permitAll();
     }
