@@ -32,17 +32,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-/* создаем Бин т.к. Енкодер понадобится не только при процессе логина польз. */
-    @Bean
-    public PasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder(8);
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests() //включаем авторизацию
-                    .antMatchers("/", "/registration", "/static/**", "/activate/*").permitAll() /* указываем, что для этого пути "/" и
+                    .antMatchers("/", "/registration", "/static/**", "/activate/*").permitAll() /* указываем,
+                     что для этого пути "/" и
                      "/registration" для клиента разрешаем полный доступ*/
                     .anyRequest().authenticated() // для всех остальных запросов - требуем авторизацию
                 .and()

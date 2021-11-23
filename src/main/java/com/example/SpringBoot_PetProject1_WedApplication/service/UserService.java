@@ -4,6 +4,7 @@ import com.example.SpringBoot_PetProject1_WedApplication.domain.Role;
 import com.example.SpringBoot_PetProject1_WedApplication.domain.User;
 import com.example.SpringBoot_PetProject1_WedApplication.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,6 +26,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Value("${hostname}")
+    private String hostname;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -113,9 +117,10 @@ public class UserService implements UserDetailsService {
     private void sendActivationCode(User user) {
         if (!StringUtils.isEmpty(user.getEmail())) {
             String message = String.format("Hi, %s! \n" +
-                            "Welcome to WebApp, Please, visit next link: http://localhost:8080/activate/%s",
+                            "Welcome to WebApp, Please, visit next link: http://%s/activate/%s",
                     /* при реальной разработке линк выносим в .properties*/
                     user.getUsername(),
+                    hostname,
                     user.getActivationCode()
             );
 
